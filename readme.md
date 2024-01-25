@@ -6,3 +6,5 @@
 - JS
 
 # COO, Kodinc
+
+# I like play guitar
