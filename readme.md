@@ -1,10 +1,10 @@
-# Ing. Carlos Jiménez
+# Ing. Carlos Jiménez 👨‍💻
 
-## Full Stack Developer
+## Full Stack Developer 🤖
 
 - PHP
 - JS
 
-## COO, Kodinc
+## COO, Kodinc ⚙️
 
-## I like play guitar
+## I like play guitar 🎸
