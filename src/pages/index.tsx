@@ -28,7 +28,7 @@ export default function Home() {
           <LanguageSwitcher />
         </div>
       </nav>
-      <main className="min-h-screen flex flex-col mx-2 text-center  items-center justify-center">
+      <main className="min-h-[88vh] flex flex-col mx-2 text-center  items-center justify-center">
         <h1 className="text-4xl font-bold">{t("title")}</h1>
         <p className="mt-4">{t("description")}</p>
       </main>
