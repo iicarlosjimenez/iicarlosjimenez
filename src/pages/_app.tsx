@@ -6,8 +6,8 @@ import { ThemeProvider } from "next-themes";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <Component {...pageProps} />
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <Component {...pageProps} />
     </ThemeProvider>
   );
 }

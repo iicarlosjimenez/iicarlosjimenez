@@ -7,12 +7,12 @@ export default function LanguageSwitcher() {
 
   return (
     <Menu>
-      <MenuButton className="px-4 py-2 cursor-pointer hover:border rounded w-22">
+      <MenuButton className="px-4 py-2 cursor-pointer rounded-full w-22 hover:scale-105 bg-black text-white dark:bg-white dark:text-black">
         <p>🌐 {locale?.toUpperCase()}</p>
       </MenuButton>
       <MenuItems
         anchor="bottom"
-        className="px-4 py-2 cursor-pointer border rounded-xl"
+        className="mt-1 px-4 py-2 cursor-pointer rounded-2xl bg-black text-white dark:bg-white dark:text-black"
       >
         {locales?.map((lng) => (
           <MenuItem key={lng}>
