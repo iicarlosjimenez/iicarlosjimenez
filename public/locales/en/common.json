@@ -1,4 +1,18 @@
 {
-   "title": "Hi, I'm Juan Carlos",
-   "description": "Software developer and custom solution builder"
+   "hero": {
+      "title": "Hi, I'm Juan Carlos",
+      "description": "Software developer and custom solution builder"
+   },
+   "buymeabeer": {
+      "cardelements": {
+         "number": "Card Number", 
+         "expire": "Expiration Date",
+         "cvc": "CVC"
+      },
+      "buy-me-a-beer": "Buy me <del>1 beer</del> 2 beers",
+      "buy-beers": "Buy beers",
+      "transfer": "Transfer",
+      "beers-cost": "Each beer costs $1 USD",
+      "cheers": "Cheers"
+   }
 }

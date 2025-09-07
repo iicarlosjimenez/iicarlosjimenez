@@ -1,4 +1,18 @@
 {
-   "title": "Hola, soy Juan Carlos",
-   "description": "Desarrollador de software y creador de soluciones a medida"
+   "hero": {
+      "title": "Hola, soy Juan Carlos",
+      "description": "Desarrollador de software y creador de soluciones a medida"
+   },
+   "buymeabeer": {
+      "cardelements": {
+         "number": "Número de tarjeta", 
+         "expire": "Fecha de expiración",
+         "cvc": "CVC"
+      },
+      "buy-me-a-beer": "Invítame <del>1 cerveza</del> 2 cervezas",
+      "buy-beers": "Invitar cervezas",
+      "transfer": "Transferir",
+      "beers-cost": "Cada cerveza cuesta $1 USD",
+      "cheers": "Salud"
+   }
 }
