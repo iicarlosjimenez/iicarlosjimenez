@@ -2,10 +2,8 @@ import Main from "@/components/Main";
 import Navbar from "@/components/Navbar";
 import { GetStaticPropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Checkout from "@/components/Checkout";
+import BuyMeBeer from "@/components/BuyMeBeer";
 import Head from "next/head";
-import Stripe from "stripe"
-import { useEffect, useState } from "react";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { locale } = context;
@@ -26,7 +24,7 @@ export default function BuyMeABeer() {
       </Head>
       <Navbar />
       <Main>
-        <Checkout />
+        <BuyMeBeer />
       </Main>
     </div>
   );

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { stripe } from "../../lib/stripe";
+import Link from "next/link";
+import stripe from "@/libs/stripe";
 
 const SuccessIcon = (
   <svg
@@ -154,9 +155,9 @@ export default async function SuccessPage({ searchParams }) {
           </svg>
         </a>
       )}
-      <a id="retry-button" href="/">
+      <Link id="retry-button" href="/">
         Test another
-      </a>
+      </Link>
     </div>
   );
 }
