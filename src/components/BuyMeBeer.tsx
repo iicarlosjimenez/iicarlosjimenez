@@ -66,7 +66,7 @@ function CheckoutForm({ beerCount }: CheckoutFormProps) {
     } 
     catch (error) {
       if (error instanceof Stripe.errors.StripeError) {
-        const { type, message, code } = error
+        const { message } = error
         setError(message);
       }
 
