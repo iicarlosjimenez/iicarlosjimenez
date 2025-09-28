@@ -8,6 +8,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import { FormEvent, useState } from "react";
+import Stripe from 'stripe';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -63,8 +64,13 @@ function CheckoutForm({ beerCount }: CheckoutFormProps) {
         setSucceeded(true);
       }
     } 
-    catch (error: any) {
-      setError(error.message);
+    catch (error) {
+      if (error instanceof Stripe.errors.StripeError) {
+        const { type, message, code } = error
+        setError(message);
+      }
+
+      setError("Error al intentar hacer el pago. Verifique sus datos.")
     }
 
     setLoading(false);
