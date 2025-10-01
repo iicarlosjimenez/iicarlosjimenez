@@ -102,9 +102,7 @@ function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
         <p className="text-2xl">
           {t("buymeabeer.with")} {beerCount} {t("buymeabeer.beers-house")}
         </p>
-      <div className="flex flex-col md:flex-row gap-2 md:justify-between items-center">
-        <p className="text-2xl">Invitando {beerCount} cervezas</p>
-        <span className="text-xl">($ {(beerCount).toFixed(2)} USD)</span>
+        <span className="text-xl">($ {(amount).toFixed(2)} MXN)</span>
       </div>
       {/* Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -168,11 +166,18 @@ function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
 export default function BuyMeBeer() {
   const { t } = useTranslation("common");
   const [beerCount, setBeerCount] = useState(2);
+  const [amount, setAmount] = useState(2*20);
   const [showPayment, setShowPayment] = useState(false);
 
   const appearance: Appearance = {
     theme: "stripe",
   };
+
+  const handleBeerCount = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setBeerCount(parseInt(value) || 2)
+    setAmount(parseInt(value) * 20);
+  }
 
   return (
     <div className="flex flex-col rounded-xl gap-4 px-4 md:px-6 py-5 md:py-7 font-comfortaa bg-black text-white dark:bg-white dark:text-black">
@@ -198,14 +203,14 @@ export default function BuyMeBeer() {
               id="beerCount"
               min="2"
               value={beerCount}
-              onChange={(e) => setBeerCount(parseInt(e.target.value) || 2)}
+              onChange={(e) => handleBeerCount(e)}
               className="md:w-14 border-2 rounded-full md:text-end text-center text-2xl"
             ></input>
           </div>
 
           {/* Body */}
           <div className="select-none text-2xl">
-            Total: ${(beerCount).toFixed(2)} USD
+            Total: ${(amount).toFixed(2)} MXN
           </div>
 
           {/* Footer */}
@@ -222,7 +227,7 @@ export default function BuyMeBeer() {
 
           {/* Body */}
           <Elements stripe={stripePromise} options={{ appearance }}>
-            <CheckoutForm beerCount={beerCount} />
+            <CheckoutForm beerCount={beerCount} amount={amount} />
           </Elements>
 
           {/* Footer */}

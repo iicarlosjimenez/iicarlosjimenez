@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { amount, currency = "USD" } = req.body;
+  const { amount, currency = "mxn" } = req.body;
   
   if (amount < 2) {
     return res.status(400).json({ error: "Minimum amount is 2" });
