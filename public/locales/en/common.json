@@ -9,10 +9,18 @@
          "expire": "Expiration Date",
          "cvc": "CVC"
       },
+      "title-buy-me-a-beer": "Buy me a beer",
       "buy-me-a-beer": "Buy me <del>1 beer</del> 2 beers",
       "buy-beers": "Buy beers",
       "transfer": "Transfer",
       "beers-cost": "Each beer costs $1 USD",
+      "beer-count": "Numbers of beers",
+      "continue-checkout": "Continue to checkout",
+      "with": "With",
+      "beers-house": "beers on the house",
+      "pay": "Pay",
+      "go-back": "Go back",
+      "thanks": "Thank you for the beers",
       "cheers": "Cheers"
    }
 }

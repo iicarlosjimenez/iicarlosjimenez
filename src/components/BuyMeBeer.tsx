@@ -1,22 +1,28 @@
 "use client";
 
+import { useTranslation } from "next-i18next";
 import { Appearance, loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
   CardElement,
   useStripe,
   useElements,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
 } from '@stripe/react-stripe-js';
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Stripe from 'stripe';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface CheckoutFormProps {
   beerCount: number;
+  amount: number;
 }
 
-function CheckoutForm({ beerCount }: CheckoutFormProps) {
+function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
+  const { t } = useTranslation("common");
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -80,23 +86,58 @@ function CheckoutForm({ beerCount }: CheckoutFormProps) {
   if (succeeded) {
     return (
       <div className="flex flex-col text-2xl gap-2">
-        <h3>¡Gracias por las cervezas!</h3>
-        <p className="text-lg">Tu apoyo significa mucho para mí</p>
+        <h3>
+          {t("buymeabeer.thanks")}
+        </h3>
+        <p className="text-lg">
+          {t("buymeabeer.cheers")}!!!
+        </p>
       </div>
     )
   }
 
   return (
     <>
+      <div className="select-none flex flex-col md:flex-row gap-2 md:justify-between items-center">
+        <p className="text-2xl">
+          {t("buymeabeer.with")} {beerCount} {t("buymeabeer.beers-house")}
+        </p>
       <div className="flex flex-col md:flex-row gap-2 md:justify-between items-center">
         <p className="text-2xl">Invitando {beerCount} cervezas</p>
         <span className="text-xl">($ {(beerCount).toFixed(2)} USD)</span>
       </div>
       {/* Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <CardElement>
+        <div className="flex flex-col gap-4 text-left">
+          <div className="flex flex-col gap-2">
+            <label htmlFor='card-number' className="block text-xl font-medium">
+              {t("buymeabeer.cardelements.number")}
+            </label>
+            <CardNumberElement 
+              id='card-number' 
+              className="border-2 rounded-full text-2xl p-2"
+            />
+          </div>
 
-        </CardElement>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor='card-expiry' className="block text-xl font-medium">
+                {t("buymeabeer.cardelements.expire")}
+              </label>
+              <CardExpiryElement id='card-expiry' 
+                className="border-2 rounded-full text-2xl p-2"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor='card-cvv' className="block text-xl font-medium">
+                {t("buymeabeer.cardelements.cvc")}
+              </label>
+              <CardCvcElement id='card-cvv' 
+                className="border-2 rounded-full text-2xl p-2"
+              />
+            </div>
+          </div>
+        </div>
 
         {error && (
           <div className="error-message">
@@ -110,10 +151,12 @@ function CheckoutForm({ beerCount }: CheckoutFormProps) {
           className="pay-button"
         >
           {processing ? (
-            <span>Procesando...</span>
+            <span>
+              ...
+            </span>
           ) : (
-            <button className="w-full bg-white dark:bg-black text-black dark:text-white text-xl p-4 rounded-xl">
-              Pagar
+            <button className="cursor-pointer w-full text-xl p-4 rounded-full bg-white dark:bg-black text-black dark:text-white">
+              {t("buymeabeer.pay")}
             </button>
           )}
         </button>
@@ -123,6 +166,7 @@ function CheckoutForm({ beerCount }: CheckoutFormProps) {
 }
 
 export default function BuyMeBeer() {
+  const { t } = useTranslation("common");
   const [beerCount, setBeerCount] = useState(2);
   const [showPayment, setShowPayment] = useState(false);
 
@@ -133,9 +177,11 @@ export default function BuyMeBeer() {
   return (
     <div className="flex flex-col rounded-xl gap-4 px-4 md:px-6 py-5 md:py-7 font-comfortaa bg-black text-white dark:bg-white dark:text-black">
       {/* Header */}
-      <div className="flex flex-col gap-4 text-center">
-        <h2 className="text-4xl">Buy me a Beer</h2>
-        <p className="text-6xl">🍻</p>
+      <div className="select-none text-center">
+        <h2 className="text-4xl">
+          {t("buymeabeer.title-buy-me-a-beer")}
+          <span>🍻</span>
+        </h2>
       </div>
 
       {!showPayment ? (
@@ -145,7 +191,7 @@ export default function BuyMeBeer() {
           <div className="flex flex-col md:flex-row gap-2 md:justify-between items-center">
             {/* Number */}
             <label htmlFor="beerCount" className="block text-xl font-medium">
-              No de cervezas:
+              {t("buymeabeer.beer-count")}:
             </label>
             <input
               type="number"
@@ -153,21 +199,21 @@ export default function BuyMeBeer() {
               min="2"
               value={beerCount}
               onChange={(e) => setBeerCount(parseInt(e.target.value) || 2)}
-              className="md:w-14 border-2 rounded-lg md:text-end text-center text-2xl"
+              className="md:w-14 border-2 rounded-full md:text-end text-center text-2xl"
             ></input>
           </div>
 
           {/* Body */}
-          <div className="text-2xl">
+          <div className="select-none text-2xl">
             Total: ${(beerCount).toFixed(2)} USD
           </div>
 
           {/* Footer */}
           <button
             onClick={() => setShowPayment(true)}
-            className="w-full bg-white dark:bg-black text-black dark:text-white text-xl p-4 rounded-xl"
+            className="select-none cursor-pointer w-full text-xl p-4 rounded-full bg-white dark:bg-black text-black dark:text-white"
           >
-            Continuar al pago
+            {t("buymeabeer.beer-count")}
           </button>
         </div>
       ) : (
@@ -182,9 +228,9 @@ export default function BuyMeBeer() {
           {/* Footer */}
           <button 
             onClick={() => setShowPayment(false)}
-            className="w-full border p-1 rounded-xl"
+            className="cursor-pointer w-full border p-1 rounded-full"
           >
-            Volver
+            {t("buymeabeer.go-back")}
           </button>
         </div>
       )}

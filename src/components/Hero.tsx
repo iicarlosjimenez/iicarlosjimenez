@@ -7,19 +7,19 @@ export default function Hero() {
 
   return (
     <Main>
-      <h1 className="text-4xl font-bold">{t("hero.title")}</h1>
-      <p className="mt-4">{t("hero.description")}</p>
+      <h1 className="select-none text-4xl font-bold">{t("hero.title")}</h1>
+      <p className="select-none mt-4">{t("hero.description")}</p>
 
       <Link
         href="/buymeabeer"
-        className="px-6 py-4 cursor-pointer rounded-full hover:scale-105 bg-black text-white dark:bg-white dark:text-black"
+        className="select-none px-6 py-4 cursor-pointer rounded-full hover:scale-105 bg-black text-white dark:bg-white dark:text-black"
       >
         <p className="text-xl font-bold">
           <Trans
             i18nKey="buymeabeer.buy-me-a-beer"
             components={{ del: <del /> }}
           />
-          <i>🍻</i>
+          <span>🍻</span>
         </p>
       </Link>
     </Main>

@@ -9,10 +9,18 @@
          "expire": "Fecha de expiración",
          "cvc": "CVC"
       },
+      "title-buy-me-a-beer": "Invítame una cerveza",
       "buy-me-a-beer": "Invítame <del>1 cerveza</del> 2 cervezas",
       "buy-beers": "Invitar cervezas",
       "transfer": "Transferir",
       "beers-cost": "Cada cerveza cuesta $1 USD",
+      "beer-count": "Número de cervezas",
+      "continue-checkout": "Continuar al pago",
+      "with": "Invitando",
+      "beers-house": "cervezas",
+      "pay": "Pagar",
+      "go-back": "Volver",
+      "thanks": "Gracias por las cervezas",
       "cheers": "Salud"
    }
 }
