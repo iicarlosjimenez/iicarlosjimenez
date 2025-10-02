@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 import { Appearance, loadStripe } from '@stripe/stripe-js';
 import {
   Elements,
-  CardElement,
   useStripe,
   useElements,
   CardNumberElement,
@@ -48,7 +47,7 @@ function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
         headers: {
           'Content-Type':'application/json'
         },
-        body: JSON.stringify({ amount: beerCount })
+        body: JSON.stringify({ amount })
       })
 
       const { clientSecret } = await response.json();
@@ -56,7 +55,7 @@ function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
       // Genera pago
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardElement)!,
+          card: elements.getElement(CardNumberElement)!,
           billing_details: {
             name: 'Beer Supporter'
           }
@@ -143,21 +142,12 @@ function CheckoutForm({ beerCount, amount }: CheckoutFormProps) {
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={!stripe || processing || loading }
-          className="pay-button"
-        >
-          {processing ? (
-            <span>
-              ...
-            </span>
-          ) : (
-            <button className="cursor-pointer w-full text-xl p-4 rounded-full bg-white dark:bg-black text-black dark:text-white">
-              {t("buymeabeer.pay")}
-            </button>
-          )}
-        </button>
+          <button 
+            type="submit"
+            disabled={!stripe || processing || loading }
+            className="cursor-pointer w-full text-xl p-4 rounded-full bg-white dark:bg-black text-black dark:text-white">
+            { processing ? `...` : t("buymeabeer.pay") }
+          </button>
       </form>
     </>
   );
@@ -218,7 +208,7 @@ export default function BuyMeBeer() {
             onClick={() => setShowPayment(true)}
             className="select-none cursor-pointer w-full text-xl p-4 rounded-full bg-white dark:bg-black text-black dark:text-white"
           >
-            {t("buymeabeer.beer-count")}
+            {t("buymeabeer.continue-checkout")}
           </button>
         </div>
       ) : (
