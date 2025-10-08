@@ -41,7 +41,7 @@ interface MetaWebhookEntry {
    messaging?: MetaWebhookMessagingEvent[];
    changes?: Array<{
       field: string;
-      value: any;
+      value: unknown;
    }>;
 }
 interface MetaWebhookBody {
