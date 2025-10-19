@@ -20,6 +20,7 @@ export default function Home() {
     <div>
       <Head>
         <title>Carlos Jiménez</title>
+        <meta name="keywords" content="desarrollo a la medida, iicarlosjim, iicarlosjimenez, ii carlos jimenez, carlos jimenez" />
       </Head>
       <Navbar />
       <Hero />

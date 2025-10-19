@@ -12,6 +12,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { ChangeEvent, FormEvent, useState } from "react";
 import Stripe from 'stripe';
+import toast from "react-hot-toast";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -158,6 +159,7 @@ export default function BuyMeBeer() {
   const [beerCount, setBeerCount] = useState(2);
   const [amount, setAmount] = useState(2*20);
   const [showPayment, setShowPayment] = useState(false);
+  const clabeInterbancaria = "722969020706274898";
 
   const appearance: Appearance = {
     theme: "stripe",
@@ -167,6 +169,11 @@ export default function BuyMeBeer() {
     const { value } = e.target
     setBeerCount(parseInt(value) || 2)
     setAmount(parseInt(value) * 20);
+  }
+
+  const handleCopy = async (value: string) => {
+    await navigator.clipboard.writeText(value);
+    toast.success('Copied!')
   }
 
   return (
@@ -210,6 +217,17 @@ export default function BuyMeBeer() {
           >
             {t("buymeabeer.continue-checkout")}
           </button>
+
+          {/* CLABE  */}
+          <div className="flex flex-col gap-2 text-left">
+            <label>Si lo prerieres, por SPEI</label>
+            <div className="flex justify-between gap-2 border-2 rounded-full p-2 w-100">
+              <p className="select-none">{clabeInterbancaria}</p>
+              <span className="cursor-pointer text-xl"
+                onClick={() => handleCopy(clabeInterbancaria)}
+              >📋</span>
+            </div>
+          </div>
         </div>
       ) : (
         // Content

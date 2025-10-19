@@ -4,6 +4,7 @@ import { GetStaticPropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import BuyMeBeer from "@/components/BuyMeBeer";
 import Head from "next/head";
+import { Toaster } from "react-hot-toast";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { locale } = context;
@@ -25,6 +26,7 @@ export default function BuyMeABeer() {
       <Navbar />
       <Main>
         <BuyMeBeer />
+        <Toaster position="bottom-center"/>
       </Main>
     </div>
   );
