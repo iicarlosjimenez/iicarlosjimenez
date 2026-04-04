@@ -78,6 +78,15 @@ export default async function handler(
                if (event.message) {
                   console.log('💬 Mensaje de:', event.sender.id);
                   console.log('📝 Texto:', event.message.text);
+
+                  // Notificar a +522282455059 
+                  fetch('https://api.whatsapp.com/send', {
+                     method: 'POST',
+                     body: JSON.stringify({
+                        phone: '+522282455059',
+                        message: 'Hola, te acabo de enviar un mensaje desde mi web'
+                     })
+                  });
                }
             });
          });
