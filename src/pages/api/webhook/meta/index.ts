@@ -14,6 +14,15 @@ interface MetaWebhookMessage {
       };
    }>;
 }
+interface MetaWebhookMessageBusinessAccount {
+  from: string;
+  id: string;
+  timestamp: number;
+  text: {
+    body: string;
+  };
+  type: string;
+}
 interface MetaWebhookMessagingEvent {
    sender: {
       id: string;
@@ -48,6 +57,21 @@ interface MetaWebhookBody {
    object: string;
   entry: MetaWebhookEntry[];
 }
+interface MetaWebhookChanges {
+   messaging_product: string;
+   metadata: {
+      display_phone_number: string;
+      phone_number_id: string;
+   };
+   contacts: MetaWebhookContact[];
+   messages: MetaWebhookMessageBusinessAccount[];
+}
+interface MetaWebhookContact {
+   profile: {
+      name: string;
+   };
+   wa_id: string;
+}
 
 export default async function handler(
    request: NextApiRequest,
@@ -78,15 +102,48 @@ export default async function handler(
                if (event.message) {
                   console.log('💬 Mensaje de:', event.sender.id);
                   console.log('📝 Texto:', event.message.text);
+               }
+            });
+         });
+      }
+      if (body.object === 'whatsapp_business_account') {
+         body.entry?.forEach(entry => {
+            entry.changes?.forEach(async change => {
+               if (change.field === 'messages') {
+                  
+                  const { contacts, messages } = change.value as MetaWebhookChanges;
+                  const { from, text } = messages[0] as MetaWebhookMessageBusinessAccount;
+                  const { name } = contacts[0].profile;
 
-                  // Notificar a +522282455059 
-                  fetch('https://api.whatsapp.com/send', {
+                  // Usar la Cloud API de Meta
+                  const PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_KODINC; // ID del número de tu WABA
+                  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;       // Token permanente o temporal
+                  const MY_NUMBER = '522282455059';
+
+                  // Notificar a +522282455059 y comprobar si el mensaje fue enviado por fetch con status 200 o 201
+                  const response = await fetch(`https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`, {
                      method: 'POST',
+                     headers: {
+                        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                     },
                      body: JSON.stringify({
-                        phone: '+522282455059',
-                        message: 'Hola, te acabo de enviar un mensaje desde mi web'
+                        messaging_product: 'whatsapp',
+                        to: MY_NUMBER,
+                        type: 'text',
+                        text: {
+                           body: `🔔 Nuevo mensaje en WABA\n\n👤 De: ${name}\n📱 Número: ${from}\n💬 Mensaje: ${text.body}`
+                        }
                      })
                   });
+
+                  const result = await response.json();
+
+                  if (response.ok) {
+                     logger.info('✅ Notificación enviada correctamente', result);
+                  } else {
+                     logger.error('❌ Error al enviar notificación:', result);
+                  }
                }
             });
          });
