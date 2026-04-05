@@ -107,49 +107,50 @@ export default async function handler(
          });
       }
       if (body.object === 'whatsapp_business_account') {
-         body.entry?.forEach(entry => {
-            entry.changes?.forEach(async change => {
+         for (const entry of body.entry ?? []) {
+            for (const change of entry.changes ?? []) {
                if (change.field === 'messages') {
-                  
+
                   const { contacts, messages } = change.value as MetaWebhookChanges;
-                  if (contacts && messages) {
-                     const { from, text } = messages[0] as MetaWebhookMessageBusinessAccount;
-                     const { name } = contacts[0].profile;
+
+                  if (!contacts || !messages) continue;
+
+                  const { from, text } = messages[0] as MetaWebhookMessageBusinessAccount;
+                  const { name } = contacts[0].profile;
    
-                     // Usar la Cloud API de Meta
-                     const PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_KODINC_MX; // ID del número de tu WABA
-                     const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;       // Token permanente o temporal
-                     const MY_NUMBER = '522282455059';
+                  // Usar la Cloud API de Meta
+                  const PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_KODINC_MX; // ID del número de tu WABA
+                  const ACCESS_TOKEN = process.env.META_ACCESS_TOKEN;       // Token permanente o temporal
+                  const MY_NUMBER = '522282455059';
    
-                     // Notificar a +522282455059 y comprobar si el mensaje fue enviado por fetch con status 200 o 201
-                     const response = await fetch(`https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`, {
-                        method: 'POST',
-                        headers: {
-                           'Authorization': `Bearer ${ACCESS_TOKEN}`,
-                           'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                           messaging_product: 'whatsapp',
-                           recipient_type: 'individual',
-                           to: MY_NUMBER,
-                           type: 'text',
-                           text: {
-                              body: `🔔 Nuevo mensaje en WABA\n\n👤 De: ${name}\n📱 Número: ${from}\n💬 Mensaje: ${text.body}`
-                           }
-                        })
-                     });
+                  // Notificar a +522282455059 y comprobar si el mensaje fue enviado por fetch con status 200 o 201
+                  const response = await fetch(`https://graph.facebook.com/v23.0/${PHONE_NUMBER_ID}/messages`, {
+                     method: 'POST',
+                     headers: {
+                        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({
+                        messaging_product: 'whatsapp',
+                        recipient_type: 'individual',
+                        to: MY_NUMBER,
+                        type: 'text',
+                        text: {
+                           body: `🔔 Nuevo mensaje en WABA\n\n👤 De: ${name}\n📱 Número: ${from}\n💬 Mensaje: ${text.body}`
+                        }
+                     })
+                  });
    
-                     const result = await response.json();
+                  const result = await response.json();
    
-                     if (response.ok) {
-                        logger.info('✅ Notificación enviada correctamente', result);
-                     } else {
-                        logger.error('❌ Error al enviar notificación:', result);
-                     }
+                  if (response.ok) {
+                     logger.info('✅ Notificación enviada correctamente', result);
+                  } else {
+                     logger.error('❌ Error al enviar notificación:', result);
                   }
                }
-            });
-         });
+            }
+         }
       }
 
       response.status(200).send('EVENT_RECEIVED');
