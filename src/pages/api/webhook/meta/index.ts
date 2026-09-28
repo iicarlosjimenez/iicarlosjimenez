@@ -67,9 +67,10 @@ interface MetaWebhookChanges {
    messages: MetaWebhookMessageBusinessAccount[];
 }
 interface MetaWebhookContact {
-   profile: {
-      name: string;
-   };
+   // profile: {
+   //    name: string;
+   // };
+   user_id: string;
    wa_id: string;
 }
 
@@ -116,7 +117,7 @@ export default async function handler(
                   if (!contacts || !messages) continue;
 
                   const { from, text } = messages[0] as MetaWebhookMessageBusinessAccount;
-                  const { name } = contacts[0].profile;
+                  // const { name } = contacts[0].profile;
    
                   // Usar la Cloud API de Meta
                   const PHONE_NUMBER_ID = process.env.WA_PHONE_NUMBER_ID_KODINC_MX; // ID del número de tu WABA
@@ -136,7 +137,7 @@ export default async function handler(
                         to: MY_NUMBER,
                         type: 'text',
                         text: {
-                           body: `🔔 Nuevo mensaje en WABA\n\n👤 De: ${name}\n📱 Número: ${from}\n💬 Mensaje: ${text.body}`
+                           body: `🔔 Nuevo mensaje en WABA\n\n📱 Número: ${from}\n💬 Mensaje: ${text.body}`
                         }
                      })
                   });
